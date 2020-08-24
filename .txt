@@ -1,0 +1,8 @@
+openssl genrsa -out server_embedded.key 2048
+openssl req -new -out server_embedded.csr -key server_embedded.key -config "C:\OpenSSL-Win64\bin\openssl.cfg"
+openssl x509 -req -days 1500 -in server_embedded.csr -signkey server_embedded.key -out server_embedded.crt
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in server_embedded.key -out server_embedded.pem
+
+
+
+java -jar server-0.41.12.jar -dataFolder C:\Users\SHIVAM\Documents\myserver
