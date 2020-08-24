@@ -1,6 +1,9 @@
 #include<Servo.h>
 #include <LiquidCrystal.h>
-Servo horizontal; 
+  LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+  const unsigned long eventTime_1 = 500; 
+  unsigned long previousTime_1 = 0;
+  Servo horizontal; 
   Servo vertical; 
   int servoh =180;
   int servov = 45;  
@@ -12,9 +15,58 @@ Servo horizontal;
   int ldrrt = 1; 
   int ldrld = 2; 
   int ldrrd = 3; 
+
+    byte Hand[] = {
+    B00100,
+    B00100,
+    B00100,
+    B01110,
+    B01110,
+    B11111,
+    B11011,
+    B10001
+  };
 void setup()
   { 
   Serial.begin(9600);
+
+  lcd.begin(16, 2);
+    lcd.createChar(0,Hand);
+    lcd.setCursor(0,0);
+    lcd.write(byte(0));
+    lcd.print("   WELCOME   ");
+    lcd.setCursor(15,0);
+    lcd.write(byte(0));
+      delay(4000);
+    
+    lcd.setCursor(0,0);
+    lcd.print("   DUAL  AXIS  ");
+    lcd.setCursor(0,1);
+    lcd.print(" SOLAR  TRACKER ");
+      delay(5000);
+      lcd.clear();
+  
+    lcd.print("Loading");
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+    lcd.print(".");
+      delay(500);
+      lcd.clear();
+
   horizontal.attach(9);
   vertical.attach(10);
   horizontal.write(180);
@@ -23,10 +75,28 @@ void setup()
 }
 void loop()
 {
-  int lt = analogRead(ldrlt); // top left
+      int lt = analogRead(ldrlt); // top left
       int rt = analogRead(ldrrt); // top right
       int ld = analogRead(ldrld); // down left
       int rd = analogRead(ldrrd); // down right
+      
+      double avgp=avg;
+      unsigned long currentTime = millis();
+       
+              if( currentTime - previousTime_1 >= eventTime_1 )
+              {
+                              
+                   lcd.clear();
+                   lcd.setCursor(0,0);
+                   lcd.print("  SOLAR  PANEL  ");
+                   double le = (avgp/1023)*100;
+                   int  level = le;
+                   lcd.setCursor(0,1);
+                   lcd.print("LIGHT LEVEL :");
+                   lcd.print(level);
+                   lcd.print("%");
+                   previousTime_1 = currentTime;
+               }
       
   int avg = (lt + rt + ld + rd)/4;
   int dtime = 10; int tol = 50;
