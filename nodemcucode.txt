@@ -1,49 +1,50 @@
-
 #include <ESP8266WiFi.h>
 #define BLYNK_PRINT Serial
 #include<Servo.h>
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 
-int data;
-SimpleTimer timer;
-char auth[] = "EzHCWM2kxTbR2Na5HKzncIv1NOHvRL1V";
-char ssid[] = "S";
-char pass[] = "Sagar$46";
-Servo s1;
-Servo s2;
-
-BLYNK_WRITE(V1)
-{
- s1.write(param.asInt());
-}
-BLYNK_WRITE(V2)
-{
- s2.write(param.asInt());
-}
-void myTimerEvent()
+  char auth[] = "XXXXXXXXXXXXXX";// Auth Token sent to Email
+  char ssid[] = "XXXXX";         // WiFi SSID or WiFi name 
+  char pass[] = "XXXXX";         // WiFi Paasword
+  
+  int data;
+  SimpleTimer timer;
+  Servo s1;
+  Servo s2;
+    
+    BLYNK_WRITE(V1)
+      {
+         s1.write(param.asInt());
+      }
+    BLYNK_WRITE(V2)
+      {
+        s2.write(param.asInt());
+      }
+    
+    void myTimerEvent()
       {
         Blynk.virtualWrite(V0, millis() / 1000);
       }
-void value()
+    
+    void value()
       {
         Blynk.virtualWrite(V0,"Volts-");
         Blynk.virtualWrite(V0,data);
       }
+
 void setup()
-{
-  Serial.begin(9600);
-  Blynk.begin(auth, ssid, pass);
-  //Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 8442);
-  Blynk.begin(auth, ssid, pass, IPAddress(192,168,0,102), 8080);
-  timer.setInterval(1000L,value);
-  s1.attach(15);//D8
-  s2.attach(02);//D4
-}
+  {
+    Serial.begin(9600);
+    Blynk.begin(auth,ssid,pass,IPAddress(192,168,0,105),8080);
+    timer.setInterval(1000L,value);
+    s1.attach(15);//D8
+    s2.attach(02);//D4
+  }
 
 void loop()
-{
-if(Serial.available())
+  {
+    if(Serial.available())
       {
         data=Serial.read();
         Serial.print("Light Level - ");
@@ -51,8 +52,6 @@ if(Serial.available())
         Serial.println();
        delay(200);    
       }
- 
- Blynk.run();
- timer.run();
-  
-}
+    Blynk.run();
+    timer.run();
+  }
