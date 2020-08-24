@@ -6,6 +6,7 @@
 #include <BlynkSimpleEsp8266.h>
 
 int data;
+SimpleTimer timer;
 char auth[] = "EzHCWM2kxTbR2Na5HKzncIv1NOHvRL1V";
 char ssid[] = "S";
 char pass[] = "Sagar$46";
@@ -20,6 +21,10 @@ BLYNK_WRITE(V2)
 {
  s2.write(param.asInt());
 }
+void myTimerEvent()
+      {
+        Blynk.virtualWrite(V0, millis() / 1000);
+      }
 void value()
       {
         Blynk.virtualWrite(V0,"Volts-");
@@ -31,6 +36,7 @@ void setup()
   Blynk.begin(auth, ssid, pass);
   //Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 8442);
   Blynk.begin(auth, ssid, pass, IPAddress(192,168,0,102), 8080);
+  timer.setInterval(1000L,value);
   s1.attach(15);//D8
   s2.attach(02);//D4
 }
@@ -47,5 +53,6 @@ if(Serial.available())
       }
  
  Blynk.run();
+ timer.run();
   
 }
