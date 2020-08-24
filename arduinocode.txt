@@ -27,7 +27,8 @@ void loop()
       int rt = analogRead(ldrrt); // top right
       int ld = analogRead(ldrld); // down left
       int rd = analogRead(ldrrd); // down right
-      int avg = (lt + rt + ld + rd)/4;
+      
+  int avg = (lt + rt + ld + rd)/4;
   int dtime = 10; int tol = 50;
       
       int avt = (lt + rt) / 2; // average  top
@@ -83,4 +84,9 @@ void loop()
            horizontal.write(servoh);
          }
   delay(dtime);
+  if(avg>10)
+            {
+              Serial.write(avg);
+              Serial.write("\n");
+            }
 }

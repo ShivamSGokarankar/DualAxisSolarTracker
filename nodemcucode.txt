@@ -1,6 +1,6 @@
 
 #include <ESP8266WiFi.h>
-
+#define BLYNK_PRINT Serial
 #include<Servo.h>
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
@@ -20,8 +20,14 @@ BLYNK_WRITE(V2)
 {
  s2.write(param.asInt());
 }
+void value()
+      {
+        Blynk.virtualWrite(V0,"Volts-");
+        Blynk.virtualWrite(V0,data);
+      }
 void setup()
 {
+  Serial.begin(9600);
   Blynk.begin(auth, ssid, pass);
   //Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 8442);
   Blynk.begin(auth, ssid, pass, IPAddress(192,168,0,102), 8080);
@@ -31,6 +37,14 @@ void setup()
 
 void loop()
 {
+if(Serial.available())
+      {
+        data=Serial.read();
+        Serial.print("Light Level - ");
+        Serial.print(data);
+        Serial.println();
+       delay(200);    
+      }
  
  Blynk.run();
   
