@@ -23,11 +23,39 @@ void setup()
 }
 void loop()
 {
-  int i=0;
-  while(true)
-  {
-  vertical.write(i++);
-  horizontal.write(i++);
-  delay(10);
-  }
+  int lt = analogRead(ldrlt); // top left
+      int rt = analogRead(ldrrt); // top right
+      int ld = analogRead(ldrld); // down left
+      int rd = analogRead(ldrrd); // down right
+      int avg = (lt + rt + ld + rd)/4;
+  int dtime = 10; int tol = 50;
+      
+      int avt = (lt + rt) / 2; // average  top
+      int avd = (ld + rd) / 2; // average  down
+      int avl = (lt + ld) / 2; // average  left
+      int avr = (rt + rd) / 2; // average  right
+      
+      int dvert = avt - avd; // diffirence of up and down
+      int dhoriz = avl - avr;// diffirence og left and rigt
+  
+      if (-1*tol > dvert || dvert > tol) //  if the diffirence is in the tolerance else change vertical angle
+         {
+            if (avt > avd)
+               {
+                 servov = ++servov;
+                    if (servov > servovLimitHigh)
+                       {
+                         servov = servovLimitHigh;
+                       }
+               }
+            else if (avt < avd)
+               {
+                 servov= --servov;
+                    if (servov < servovLimitLow)
+                       {
+                         servov = servovLimitLow;
+                       }
+               }
+           vertical.write(servov);
+         }
 }
