@@ -1,0 +1,33 @@
+#include<Servo.h>
+#include <LiquidCrystal.h>
+Servo horizontal; 
+  Servo vertical; 
+  int servoh =180;
+  int servov = 45;  
+  int servohLimitHigh = 180;
+  int servohLimitLow = 0;
+  int servovLimitHigh = 150;
+  int servovLimitLow = 30;
+  int ldrlt = 0; 
+  int ldrrt = 1; 
+  int ldrld = 2; 
+  int ldrrd = 3; 
+void setup()
+  { 
+  Serial.begin(9600);
+  horizontal.attach(9);
+  vertical.attach(10);
+  horizontal.write(180);
+  vertical.write(0);
+  delay(1000);
+}
+void loop()
+{
+  int i=0;
+  while(true)
+  {
+  vertical.write(i++);
+  horizontal.write(i++);
+  delay(10);
+  }
+}
