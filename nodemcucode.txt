@@ -23,7 +23,8 @@ BLYNK_WRITE(V2)
 void setup()
 {
   Blynk.begin(auth, ssid, pass);
-  Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 8442);
+  //Blynk.begin(auth, ssid, pass, "blynk-cloud.com", 8442);
+  Blynk.begin(auth, ssid, pass, IPAddress(192,168,0,102), 8080);
   s1.attach(15);//D8
   s2.attach(02);//D4
 }
